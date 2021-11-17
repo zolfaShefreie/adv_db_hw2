@@ -21,7 +21,7 @@ class UserCard extends React.Component{
 
     handleClick(){
         localStorage.setItem('pk', this.props.item.id)
-        window.location.href = "/update-user/";
+        window.location.href = "/user-update/";
     }
 
 }

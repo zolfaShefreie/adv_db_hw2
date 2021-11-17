@@ -26,7 +26,12 @@ class UserForm extends React.Component{
             'address': '',
             'gender': 'male',
             'showSuccess': false,
-            'successMsg': ''
+            'successMsg': '',
+            'maleCheck': true,
+            'femaleCheck': false
+        }
+        if (!this.props.update){
+            localStorage.removeItem('pk')
         }
         this.pk = (this.props.update&&localStorage.getItem('pk')) ? localStorage.getItem('pk') : null
         console.log(this.pk)
@@ -36,8 +41,13 @@ class UserForm extends React.Component{
 
     async componentDidMount(){
         if (this.pk){
-            const response = await axios.get(`${this.baseUrl}/${this.pk}/`);
+            const response = await axios.get(`${this.baseUrl}${this.pk}/`);
             await this.setState(response.data)
+            console.log(response.data['gender']=="female")
+            if(response.data['gender'] == "female"){
+                await this.setState({maleCheck: false, femaleCheck: true})
+                console.log(this.state)
+            }
         }
     }
 
@@ -131,12 +141,14 @@ class UserForm extends React.Component{
                         </div>
                         <div className="custom-control custom-radio custom-control-inline mt-2 mb-2">
                             <input type="radio" id="customRadioInline1" name="customRadioInline1"
-                                   className="custom-control-input" defaultChecked onChange={this.handleChange}/>
+                                   className="custom-control-input" defaultChecked={this.state.maleCheck}
+                                   onChange={this.handleChange}/>
                                 <label className="custom-control-label" htmlFor="customRadioInline1">male</label>
                         </div>
                         <div className="custom-control custom-radio custom-control-inline">
                             <input type="radio" id="customRadioInline2" name="customRadioInline1"
-                                   className="custom-control-input" onChange={this.handleChange}/>
+                                   className="custom-control-input" defaultChecked={this.state.femaleCheck}
+                                   onChange={this.handleChange}/>
                                 <label className="custom-control-label" htmlFor="customRadioInline2">female</label>
                         </div>
                         <br/>
@@ -160,9 +172,9 @@ class UserForm extends React.Component{
 
         if (this.props.update){
             console.log("update")
-           await axios.put(`${this.baseUrl}/${this.pk}/`, data).then((response) => {
+           await axios.put(`${this.baseUrl}${this.pk}/`, data).then((response) => {
                this.setState({showSuccess:true, successMsg: 'The user updated successfully'})
-               setTimeout(() => {this.setState({showSuccess:false})}, 2000);
+               setTimeout(() => {this.setState({showSuccess:false})}, 3000);
                window.location.reload()
                console.log(response.data);
         }, (error) => {

@@ -15,7 +15,7 @@ class Navbar extends React.Component{
                         <Link className="nav-link" to="/user-form/">Add User</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="/user-form/">Users</Link>
+                        <Link className="nav-link" to="/user-list/">Users</Link>
                     </li>
                 </ul>
             </nav>
