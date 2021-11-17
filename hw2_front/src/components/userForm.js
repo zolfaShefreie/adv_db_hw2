@@ -5,8 +5,8 @@ import {Link, Redirect} from "react-router-dom";
 
 class UserForm extends React.Component{
 
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.baseUrl = 'http://127.0.0.1:8000/users/user-info/';
         this.input_style = {
             backgroundColor: '#3b3636',
@@ -28,7 +28,7 @@ class UserForm extends React.Component{
             'showSuccess': false,
             'successMsg': ''
         }
-        this.pk = localStorage.getItem('pk')
+        this.pk = this.props.update ? localStorage.getItem('pk') : null
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }

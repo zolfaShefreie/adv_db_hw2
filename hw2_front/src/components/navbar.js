@@ -12,10 +12,10 @@ class Navbar extends React.Component{
             <nav className="navbar dark">
                 <ul className="nav justify-content-end">
                     <li className="nav-item">
-                        <Link className="nav-link" to="/user/form/">Add User</Link>
+                        <Link className="nav-link" to="/user-form/">Add User</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="/user/form/">Users</Link>
+                        <Link className="nav-link" to="/user-form/">Users</Link>
                     </li>
                 </ul>
             </nav>

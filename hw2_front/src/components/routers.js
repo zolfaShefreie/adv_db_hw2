@@ -7,7 +7,8 @@ export default function Routers() {
     return (
 
         <Routes>
-            <Route exact path="/user-form/" element={<UserForm/>}/>
+            <Route exact path="/user-form/" element={<UserForm update={false}/>}/>
+            {/*<Route exact path="/user-update/" element={<UserForm update={true}/>}/>*/}
             {/*<Route exact path="/user/list/" render={() => <SignUp/>}/>*/}
             {/*<Route exact path="/user/info/" render={() => <Info/>}/>*/}
 
