@@ -24,11 +24,12 @@ class UserForm extends React.Component{
             'first_name': '',
             'birthday': '',
             'address': '',
-            'gender': '',
+            'gender': 'male',
             'showSuccess': false,
             'successMsg': ''
         }
-        this.pk = this.props.update ? localStorage.getItem('pk') : null
+        this.pk = (this.props.update&&localStorage.getItem('pk')) ? localStorage.getItem('pk') : null
+        console.log(this.pk)
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -44,11 +45,11 @@ class UserForm extends React.Component{
         return (
             <div className="container box" style={{width: '42%'}}>
                 {
-                    this.pk &&
+                    this.props.update &&
                     <h1 style={{color: '#3b3636'}}>Update User Info</h1>
                 }
                 {
-                    !this.pk &&
+                    !this.props.update &&
                      <h1 style={{color: '#3b3636'}}>add User Info</h1>
                 }
                 {
@@ -108,8 +109,8 @@ class UserForm extends React.Component{
                         </div>
                         <div className="form-group row m-2">
                         <label htmlFor="phone" className="col-form-label col-form-label-sm">Phone</label>
-                        <input type="tel" className="form-control" id="phone" style={this.input_style}
-                               onChange={this.handleChange} value={this.state.address} required/>
+                        <input type="text" className="form-control" id="phone" style={this.input_style}
+                               onChange={this.handleChange} value={this.state.phone} required/>
                         {
                             'phone' in this.state.errors &&
                             <div style={this.error_style}>
@@ -157,27 +158,32 @@ class UserForm extends React.Component{
             phone: this.state.phone,
         }
 
-        if (!this.pk){
-             await axios.post(`${this.URL}`, data).then((response) => {
-            // localStorage.setItem('user_id', response.data.id);
-            // localStorage.setItem('token', response.data.token);
-                 this.setState({showSuccess:true, successMsg: 'The user added successfully'})
-                 setTimeout(() => {this.setState({showSuccess:false})}, 800);
-                console.log(response.data);
-        }, (error) => {
-            console.log('error', Object.assign({}, error.response.data));
-            this.setState({errors: error.response.data})
-        });
-        }else{
+        if (this.props.update){
+            console.log("update")
            await axios.put(`${this.baseUrl}/${this.pk}/`, data).then((response) => {
                this.setState({showSuccess:true, successMsg: 'The user updated successfully'})
-               setTimeout(() => {this.setState({showSuccess:false})}, 500);
+               setTimeout(() => {this.setState({showSuccess:false})}, 2000);
                window.location.reload()
                console.log(response.data);
         }, (error) => {
             console.log('error', Object.assign({}, error.response.data));
             this.setState({errors: error.response.data})
         });
+
+        }else {
+            await axios.post(`${this.baseUrl}`, data).then((response) => {
+                // localStorage.setItem('user_id', response.data.id);
+                // localStorage.setItem('token', response.data.token);
+                this.setState({showSuccess: true, successMsg: 'The user added successfully'})
+                setTimeout(() => {
+                    this.setState({showSuccess: false})
+                },  3000);
+                console.log(response.data);
+                window.location.reload()
+            }, (error) => {
+                console.log('error', Object.assign({}, error.response.data));
+                this.setState({errors: error.response.data})
+            });
         }
 
     }
@@ -185,9 +191,9 @@ class UserForm extends React.Component{
     async handleChange(event) {
         const newState = {}
         if (event.target.id === 'customRadioInline2' && event.target.value === 'on'){
-            await this.setState({'user_type': 'female'})
+            await this.setState({'gender': 'female'})
         }else if(event.target.id === 'customRadioInline1' && event.target.value === 'on'){
-            await this.setState({'user_type': 'male'})
+            await this.setState({'gender': 'male'})
         }
         else {
             const newState = {}
@@ -195,7 +201,7 @@ class UserForm extends React.Component{
             await this.setState(newState);
         }
         await this.setState(newState);
-        console.log(this.state.avatar)
+        console.log(this.state)
     }
 }
 
