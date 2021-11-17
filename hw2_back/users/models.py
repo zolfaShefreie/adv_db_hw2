@@ -7,7 +7,6 @@ from .utils import Enum
 class GenderChoices(Enum):
     male = 'm'
     female = 'f'
-    others = 'o'
 
 
 class UserInfo(models.Model):
